@@ -1,7 +1,7 @@
 // Third-party Imports
-
 import { AuthProvider } from "../context/AuthContext";
 import 'react-perfect-scrollbar/dist/css/styles.css'
+
 // Style Imports
 import '@/app/globals.css'
 
@@ -20,9 +20,11 @@ const RootLayout = ({ children }) => {
 
   return (
     <html id='__next' dir={direction}>
-      <body className='flex is-full min-bs-full flex-auto flex-col'><AuthProvider>{children}</AuthProvider></body>
+      <body className='flex is-full min-bs-full flex-auto flex-col'>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   )
 }
 
-export default RootLayout
+export default RootLayout;

@@ -1,10 +1,13 @@
-
 "use client";
-import { useRouter } from 'next/navigation';
-import { auth, db, storage } from '../../../firebase'; // Import Firebase storage
+
+// Firebase imports should come before custom imports
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'; // Firebase Storage
-import { collection, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore'; // Firestore
+
+import { auth, db, storage } from '../../../firebase'; // Import Firebase storage
+
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const CustomerDashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -298,75 +301,47 @@ const CustomerDashboard = () => {
                 >
                   <option value="Open">Open</option>
                   <option value="In Progress">In Progress</option>
-                  <option value="Resolved">Resolved</option>
+                  <option value="Closed">Closed</option>
                 </select>
-                <input type="file" onChange={handleFileUpload} className="w-full p-2 border border-gray-300 rounded" />
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
                 <textarea
                   placeholder="Comments"
                   name="comments"
                   value={newTicket.comments}
                   onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded"
-                  rows={2}
+                  rows={4}
                 />
-                <label className="flex items-center space-x-2">
+                <label>
                   <input
                     type="checkbox"
+                    name="termsAccepted"
                     checked={newTicket.termsAccepted}
-                    onChange={() => setNewTicket({ ...newTicket, termsAccepted: !newTicket.termsAccepted })}
-                    className="form-checkbox"
+                    onChange={(e) => setNewTicket((prev) => ({ ...prev, termsAccepted: e.target.checked }))}
                   />
-                  <span>I accept the terms and conditions</span>
+                  I accept the terms and conditions
                 </label>
-                <button
-                  type="button"
-                  onClick={handleCreateTicket}
-                  className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                  Submit Ticket
-                </button>
+                <div className="mt-4 flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+                    onClick={() => setOpenModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    onClick={handleCreateTicket}
+                  >
+                    Create Ticket
+                  </button>
+                </div>
               </form>
-              <button
-                onClick={() => setOpenModal(false)}
-                className="mt-4 w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Modal for viewing ticket details */}
-        {selectedTicket && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-4">Ticket Details</h2>
-              <p><strong>Title:</strong> {selectedTicket.title}</p>
-              <p><strong>Description:</strong> {selectedTicket.description}</p>
-              <p><strong>Priority:</strong> {selectedTicket.priority}</p>
-              <p><strong>Status:</strong> {selectedTicket.status}</p>
-              <p><strong>Category:</strong> {selectedTicket.category}</p>
-              <p><strong>Contact Email:</strong> {selectedTicket.contactEmail}</p>
-              <p><strong>Phone:</strong> {selectedTicket.phone}</p>
-              <p><strong>Due Date:</strong> {selectedTicket.dueDate}</p>
-              <p><strong>Created At:</strong> {new Date(selectedTicket.createdAt.seconds * 1000).toLocaleString()}</p>
-              {selectedTicket.attachment && (
-                <a
-                  href={selectedTicket.attachment}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  View Attachment
-                </a>
-              )}
-              <p><strong>Comments:</strong> {selectedTicket.comments}</p>
-              <button
-                onClick={handleCloseViewModal}
-                className="mt-4 w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-              >
-                Close
-              </button>
             </div>
           </div>
         )}

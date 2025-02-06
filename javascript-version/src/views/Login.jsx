@@ -1,12 +1,17 @@
-
 "use client";
 
-
 import { useRouter } from "next/navigation";
+
+// Firebase imports
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase"; // Ensure correct import of Firestore instance
+
+// MUI imports
 import { TextField, Button, Container, Typography } from "@mui/material";
+
+// Custom imports
 import { useAuth } from "../context/AuthContext";
+
 import { useState } from "react";
 
 const Login = () => {

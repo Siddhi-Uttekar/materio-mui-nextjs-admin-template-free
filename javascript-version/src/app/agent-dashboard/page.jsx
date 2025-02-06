@@ -1,5 +1,4 @@
-// External Libraries
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -9,7 +8,6 @@ import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 
 // Other internal imports (if any)...
 
-
 const AgentDashboard = () => {
   const [tickets, setTickets] = useState([]);
   const [user, setUser] = useState(null);
@@ -17,6 +15,7 @@ const AgentDashboard = () => {
   const [updateFields, setUpdateFields] = useState({ status: '', assignedTo: '' });
   const router = useRouter();
 
+  // Checking user authentication and redirecting if needed
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
@@ -27,6 +26,7 @@ const AgentDashboard = () => {
     return () => unsubscribe();
   }, [router]);
 
+  // Fetching tickets from Firestore in real-time
   useEffect(() => {
     const ticketsRef = collection(db, 'tickets');
     const unsubscribe = onSnapshot(ticketsRef, (snapshot) => {
@@ -36,6 +36,7 @@ const AgentDashboard = () => {
     return () => unsubscribe();
   }, []);
 
+  // Handle ticket updates
   const handleUpdateTicket = async () => {
     if (!selectedTicket) return;
     try {
@@ -50,6 +51,7 @@ const AgentDashboard = () => {
     }
   };
 
+  // Handle user logout
   const handleLogout = async () => {
     try {
       await auth.signOut();

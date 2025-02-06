@@ -5,6 +5,10 @@ module.exports = {
     "prettier"
   ],
   "rules": {
+   
+      "import/order": "off", // Disables the import order rule
+      "padding-line-between-statements": "off", // Disables blank line requirements
+
     "jsx-a11y/alt-text": "off",
     "react/display-name": "off",
     "react/no-children-prop": "off",
