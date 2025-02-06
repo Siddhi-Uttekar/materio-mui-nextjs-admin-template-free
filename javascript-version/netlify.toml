@@ -2,3 +2,15 @@
   command = "npm install && npm run build"
   publish = ".next"
   node_version = "18"  # Change to 16 if needed
+
+
+[build.cache]
+  paths = [
+    "node_modules/.cache",
+    "public/static",
+    ".next/cache"
+  ]
+
+[build.environment]
+  NODE_VERSION = "18.20.6"
+  NPM_VERSION = "10.8.2"
