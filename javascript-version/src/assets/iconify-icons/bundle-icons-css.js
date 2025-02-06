@@ -1,15 +1,3 @@
-/**
- * This is an advanced example for creating icon bundles for Iconify SVG Framework.
- *
- * It creates a bundle from:
- * - All SVG files in a directory.
- * - Custom JSON files.
- * - Iconify icon sets.
- * - SVG framework.
- *
- * This example uses Iconify Tools to import and clean up icons.
- * For Iconify Tools documentation visit https://docs.iconify.design/tools/tools2/
- */
 import { promises as fs } from 'node:fs'
 import { dirname, join } from 'node:path'
 
@@ -20,11 +8,11 @@ import { getIcons, getIconsCSS, stringToIcon } from '@iconify/utils'
 const sources = {
   json: [
     // Iconify JSON file (@iconify/json is a package name, /json/ is directory where files are, then filename)
-    require.resolve('@iconify/json/json/ri.json'),
+    import('@iconify/json/json/ri.json'),
 
-    // Custom file with only few icons
+    // Custom file with only a few icons
     {
-      filename: require.resolve('@iconify/json/json/line-md.json'),
+      filename: import('@iconify/json/json/line-md.json'),
       icons: ['home-twotone-alt', 'github', 'document-list', 'document-code', 'image-twotone']
     }
 
@@ -81,7 +69,7 @@ const target = join(__dirname, 'generated-icons.css')
     const organizedList = organizeIconsList(sources.icons)
 
     for (const prefix in organizedList) {
-      const filename = require.resolve(`@iconify/json/json/${prefix}.json`)
+      const filename = import(`@iconify/json/json/${prefix}.json`)
 
       sourcesJSON.push({
         filename,
