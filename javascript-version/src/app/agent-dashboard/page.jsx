@@ -1,8 +1,10 @@
 "use client";
-import { auth, db } from '../../../firebase';
-import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+
+
 import { useRouter } from 'next/navigation';
+import { auth, db } from '../../../firebase';
+import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
 
 const AgentDashboard = () => {
   const [tickets, setTickets] = useState([]);
