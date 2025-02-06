@@ -6,6 +6,7 @@ module.exports = {
   ],
 
     "rules": {
+      'react/display-name': 'off',
       "import/order": "off", // Disable import order rule
       "padding-line-between-statements": "off", // Disable blank line requirements
       "newline-before-return": "off", // Disable newline before return
