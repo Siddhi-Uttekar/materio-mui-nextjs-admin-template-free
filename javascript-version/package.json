@@ -12,12 +12,8 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "build:icons": "echo 'Skipping build:icons step'",
-
     "postinstall": "npm run build:icons"
   },
-
-
-
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.14.0",
