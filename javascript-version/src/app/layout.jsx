@@ -5,7 +5,7 @@ import { AuthProvider } from "../context/AuthContext";
 import '@/app/globals.css'
 
 // Generated Icon CSS Imports
-import '@assets/iconify-icons/generated-icons.css'
+// import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
   title: 'Demo: Materio - NextJS Dashboard Free',
