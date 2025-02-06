@@ -31,7 +31,7 @@ const ForgotPassword = ({ mode }) => {
     <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>
       <Card className='flex flex-col sm:is-[450px]'>
         <CardContent className='p-6 sm:!p-12'>
-          <Link href='/' className='flex justify-center items-center mbe-6'>
+          <Link href={`/${props.goBackTo}`} className='flex justify-center items-center mbe-6'>
             <Logo />
           </Link>
           <Typography variant='h4'>Forgot Password 🔒</Typography>

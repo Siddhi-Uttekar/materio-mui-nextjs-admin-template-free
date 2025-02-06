@@ -7,6 +7,7 @@ const Layout = ({ children }) => {
   const direction = 'ltr'
 
   return (
+
     <Providers direction={direction}>
       <BlankLayout>{children}</BlankLayout>
     </Providers>

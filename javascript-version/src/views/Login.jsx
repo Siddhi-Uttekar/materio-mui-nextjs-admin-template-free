@@ -1,123 +1,144 @@
-'use client'
+// "use client";
 
-// React Imports
-import { useState } from 'react'
+// import { useState } from "react";
+// import { useAuth } from "../context/AuthContext";
+// import { useRouter } from "next/navigation";
+// import { TextField, Button, Container, Typography } from "@mui/material";
 
-// Next Imports
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+// const Login = () => {
+//   const { login } = useAuth();
+//   const router = useRouter();
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [error, setError] = useState("");
 
-// MUI Imports
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import Checkbox from '@mui/material/Checkbox'
-import Button from '@mui/material/Button'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Divider from '@mui/material/Divider'
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     try {
+//       await login(email, password);
+//       router.push("/customer-dashboard"); // Redirect to dashboard after login
+//     } catch (err) {
+//       setError("Invalid email or password");
+//     }
+//   };
 
-// Component Imports
-import Logo from '@components/layout/shared/Logo'
-import Illustrations from '@components/Illustrations'
+//   return (
+//     <Container maxWidth="sm" style={{ marginTop: "100px" }}>
+//       <Typography variant="h4" align="center" gutterBottom>
+//         Login
+//       </Typography>
+//       {error && <Typography color="error">{error}</Typography>}
+//       <form onSubmit={handleLogin}>
+//         <TextField
+//           fullWidth
+//           label="Email"
+//           margin="normal"
+//           variant="outlined"
+//           type="email"
+//           required
+//           onChange={(e) => setEmail(e.target.value)}
+//         />
+//         <TextField
+//           fullWidth
+//           label="Password"
+//           margin="normal"
+//           variant="outlined"
+//           type="password"
+//           required
+//           onChange={(e) => setPassword(e.target.value)}
+//         />
+//         <Button type="submit" variant="contained" color="primary" fullWidth>
+//           Login
+//         </Button>
+//       </form>
+//     </Container>
+//   );
+// };
 
-// Config Imports
-import themeConfig from '@configs/themeConfig'
+// export default Login;
+"use client";
 
-// Hook Imports
-import { useImageVariant } from '@core/hooks/useImageVariant'
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+import { TextField, Button, Container, Typography } from "@mui/material";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase"; // Ensure correct import of Firestore instance
 
-const Login = ({ mode }) => {
-  // States
-  const [isPasswordShown, setIsPasswordShown] = useState(false)
+const Login = () => {
+  const { login } = useAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  // Vars
-  const darkImg = '/images/pages/auth-v1-mask-dark.png'
-  const lightImg = '/images/pages/auth-v1-mask-light.png'
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  // Hooks
-  const router = useRouter()
-  const authBackground = useImageVariant(mode, lightImg, darkImg)
-  const handleClickShowPassword = () => setIsPasswordShown(show => !show)
+    try {
+      const userCredential = await login(email, password);
+      const user = userCredential.user;
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    router.push('/')
-  }
+      console.log("User logged in:", user.uid); // Debugging
+
+      // Fetch user role from Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        console.log("User data from Firestore:", userData); // Debugging
+
+        if (userData.role === "customer") {
+          router.push("/customer-dashboard");
+        } else if (userData.role === "agent") {
+          router.push("/agent-dashboard");
+        } else {
+          setError("Unknown user role: " + userData.role);
+        }
+      } else {
+        setError("User role not found in Firestore");
+        console.log("User document does not exist in Firestore");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Invalid email or password");
+    }
+  };
 
   return (
-    <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>
-      <Card className='flex flex-col sm:is-[450px]'>
-        <CardContent className='p-6 sm:!p-12'>
-          <Link href='/' className='flex justify-center items-center mbe-6'>
-            <Logo />
-          </Link>
-          <div className='flex flex-col gap-5'>
-            <div>
-              <Typography variant='h4'>{`Welcome to ${themeConfig.templateName}!👋🏻`}</Typography>
-              <Typography className='mbs-1'>Please sign-in to your account and start the adventure</Typography>
-            </div>
-            <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
-              <TextField autoFocus fullWidth label='Email' />
-              <TextField
-                fullWidth
-                label='Password'
-                id='outlined-adornment-password'
-                type={isPasswordShown ? 'text' : 'password'}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        size='small'
-                        edge='end'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={e => e.preventDefault()}
-                      >
-                        <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
-                <FormControlLabel control={<Checkbox />} label='Remember me' />
-                <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
-                  Forgot password?
-                </Typography>
-              </div>
-              <Button fullWidth variant='contained' type='submit'>
-                Log In
-              </Button>
-              <div className='flex justify-center items-center flex-wrap gap-2'>
-                <Typography>New on our platform?</Typography>
-                <Typography component={Link} href='/register' color='primary'>
-                  Create an account
-                </Typography>
-              </div>
-              <Divider className='gap-3'>or</Divider>
-              <div className='flex justify-center items-center gap-2'>
-                <IconButton size='small' className='text-facebook'>
-                  <i className='ri-facebook-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-twitter'>
-                  <i className='ri-twitter-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-github'>
-                  <i className='ri-github-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-googlePlus'>
-                  <i className='ri-google-fill' />
-                </IconButton>
-              </div>
-            </form>
-          </div>
-        </CardContent>
-      </Card>
-      <Illustrations maskImg={{ src: authBackground }} />
-    </div>
-  )
-}
+    <Container maxWidth="sm" style={{ marginTop: "100px" }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Login
+      </Typography>
+      {error && <Typography color="error">{error}</Typography>}
+      <form onSubmit={handleLogin}>
+        <TextField
+          fullWidth
+          label="Email"
+          margin="normal"
+          variant="outlined"
+          type="email"
+          required
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          label="Password"
+          margin="normal"
+          variant="outlined"
+          type="password"
+          required
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Login
+        </Button>
+      </form>
+    </Container>
+  );
+};
 
-export default Login
+export default Login;
