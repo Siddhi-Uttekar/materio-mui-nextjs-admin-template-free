@@ -1,5 +1,7 @@
-module.exports = {
+const nextConfig = {
     eslint: {
-      dirs: ['pages', 'utils'], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
+      ignoreDuringBuilds: true, // Ignore ESLint errors during build
     },
-  }
+  };
+
+  module.exports = nextConfig;

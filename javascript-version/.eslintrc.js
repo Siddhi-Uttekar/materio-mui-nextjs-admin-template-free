@@ -11,7 +11,7 @@ module.exports = {
       "newline-before-return": "off", // Disable newline before return
       "lines-around-comment": "off", // Disable lines around comments
       "import/newline-after-import": "off" // Disable newline after imports
-    
+
   },
   "settings": {
     "react": {
