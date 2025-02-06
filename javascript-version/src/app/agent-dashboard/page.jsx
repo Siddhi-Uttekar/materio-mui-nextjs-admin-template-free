@@ -1,10 +1,13 @@
-"use client";
-
-
+// External Libraries
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+
+// Firebase Libraries
 import { auth, db } from '../../../firebase';
 import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
-import React, { useState, useEffect } from 'react';
+
+// Other internal imports (if any)...
+
 
 const AgentDashboard = () => {
   const [tickets, setTickets] = useState([]);

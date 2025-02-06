@@ -1,10 +1,10 @@
 
 "use client";
+import { useRouter } from 'next/navigation';
 import { auth, db, storage } from '../../../firebase'; // Import Firebase storage
-import React, { useState, useEffect } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'; // Firebase Storage
 import { collection, addDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation'; // For navigation
+import React, { useState, useEffect } from 'react';
 
 const CustomerDashboard = () => {
   const [tickets, setTickets] = useState([]);

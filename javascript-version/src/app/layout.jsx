@@ -1,6 +1,7 @@
 // Third-party Imports
-import 'react-perfect-scrollbar/dist/css/styles.css'
+
 import { AuthProvider } from "../context/AuthContext";
+import 'react-perfect-scrollbar/dist/css/styles.css'
 // Style Imports
 import '@/app/globals.css'
 

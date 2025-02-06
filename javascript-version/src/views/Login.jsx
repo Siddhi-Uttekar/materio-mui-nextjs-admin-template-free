@@ -1,70 +1,13 @@
-// "use client";
 
-// import { useState } from "react";
-// import { useAuth } from "../context/AuthContext";
-// import { useRouter } from "next/navigation";
-// import { TextField, Button, Container, Typography } from "@mui/material";
-
-// const Login = () => {
-//   const { login } = useAuth();
-//   const router = useRouter();
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     setError("");
-//     try {
-//       await login(email, password);
-//       router.push("/customer-dashboard"); // Redirect to dashboard after login
-//     } catch (err) {
-//       setError("Invalid email or password");
-//     }
-//   };
-
-//   return (
-//     <Container maxWidth="sm" style={{ marginTop: "100px" }}>
-//       <Typography variant="h4" align="center" gutterBottom>
-//         Login
-//       </Typography>
-//       {error && <Typography color="error">{error}</Typography>}
-//       <form onSubmit={handleLogin}>
-//         <TextField
-//           fullWidth
-//           label="Email"
-//           margin="normal"
-//           variant="outlined"
-//           type="email"
-//           required
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <TextField
-//           fullWidth
-//           label="Password"
-//           margin="normal"
-//           variant="outlined"
-//           type="password"
-//           required
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//         <Button type="submit" variant="contained" color="primary" fullWidth>
-//           Login
-//         </Button>
-//       </form>
-//     </Container>
-//   );
-// };
-
-// export default Login;
 "use client";
 
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+
 import { useRouter } from "next/navigation";
-import { TextField, Button, Container, Typography } from "@mui/material";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase"; // Ensure correct import of Firestore instance
+import { TextField, Button, Container, Typography } from "@mui/material";
+import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
 const Login = () => {
   const { login } = useAuth();
