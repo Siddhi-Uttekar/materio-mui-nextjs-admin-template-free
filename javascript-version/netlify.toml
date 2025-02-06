@@ -1,0 +1,4 @@
+[build]
+  command = "npm install && npm run build"
+  publish = ".next"
+  node_version = "18"  # Change to 16 if needed
